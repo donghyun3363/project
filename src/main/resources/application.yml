@@ -1,0 +1,22 @@
+# application.yml
+spring :
+  devtools :
+    livereload :
+      enalbed : true
+  thymeleaf:
+    cache : false
+  datasource:
+    hikari :
+      connectionTimeout : 30000 # 30sec
+      maximumPoolSize : 10      # default: 10
+
+    url : jdbc:mariadb://localhost:3306/test_db
+    username : test
+    password : lee0301@
+
+project.logging.dir : /Users/hyun/Desktop/logs/spring-boot-log/project
+project.logging.level : DEBUG
+
+mybatis :
+  type-aliases-package : com.hyun
+  mapper-locations : mapper/xml/*.xml
