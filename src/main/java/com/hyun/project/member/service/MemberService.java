@@ -1,7 +1,6 @@
 package com.hyun.project.member.service;
 
-import com.hyun.project.member.domain.MemberDto;
-import com.hyun.project.model.Member;
+import com.hyun.project.member.dto.MemberDto;
 
 import java.util.List;
 

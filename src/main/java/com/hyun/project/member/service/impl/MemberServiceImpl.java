@@ -1,49 +1,54 @@
 package com.hyun.project.member.service.impl;
 
-import com.hyun.project.member.domain.MemberDto;
+import com.hyun.project.member.dto.MemberDto;
 import com.hyun.project.member.mapper.MemberMapper;
 import com.hyun.project.model.Member;
 import com.hyun.project.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class MemberServiceImpl implements MemberService {
 
-    @Autowired
-    private MemberMapper memeberMapper;
+    private final MemberMapper memeberMapper;
 
     @Override
     public MemberDto findMemberById(int id) {
 
         Member member = memeberMapper.findMemberById(id);
 
-        MemberDto memberDto = new MemberDto();
-        memberDto.setId(member.getId());
-        memberDto.setName(member.getName());
-        memberDto.setEmail(member.getEmail());
+        MemberDto findMember = MemberDto.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .password(member.getPassword()).build();
 
-        return memberDto;
+        return findMember;
     }
 
     @Override
     public List<MemberDto> findAllMember() {
 
-        List<MemberDto> memberDtoList = new ArrayList<>();
         List<Member> memberList = memeberMapper.findMemberAll();
 
+        List<MemberDto> findMemberList = new ArrayList<>();
+
         for(Member member: memberList) {
-            MemberDto memberDto = new MemberDto();
-            memberDto.setId(member.getId());
-            memberDto.setName(member.getName());
-            memberDto.setEmail(member.getEmail());
-            memberDtoList.add(memberDto);
+            MemberDto findMember = MemberDto.builder()
+                    .id(member.getId())
+                    .name(member.getName())
+                    .email(member.getEmail())
+                    .password(member.getPassword()).build();
+
+            findMemberList.add(findMember);
         }
 
-        return memberDtoList;
+        return findMemberList;
     }
 
     @Override

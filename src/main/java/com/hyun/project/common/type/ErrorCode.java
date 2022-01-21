@@ -1,4 +1,4 @@
-package com.hyun.project.advice;
+package com.hyun.project.common.type;
 
 public enum ErrorCode {
 
