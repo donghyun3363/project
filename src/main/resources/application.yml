@@ -18,5 +18,5 @@ project.logging.dir : /Users/hyun/Desktop/logs/spring-boot-log/project
 project.logging.level : DEBUG
 
 mybatis :
-  type-aliases-package : com.hyun
-  mapper-locations : mapper/xml/*.xml
+  type-aliases-package : com.hyun.project.model
+  mapper-locations : mapper/*.xml
