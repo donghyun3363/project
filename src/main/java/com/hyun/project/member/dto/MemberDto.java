@@ -1,5 +1,6 @@
 package com.hyun.project.member.dto;
 
+import io.swagger.annotations.ApiParam;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -12,13 +13,16 @@ public class MemberDto {
 
     private int id;
 
+    @ApiParam(value = "member ID", required = true)
     @NotBlank(message = "이름은 필수 값입니다.")
     private String name;
 
+    @ApiParam(value = "member Email", required = true)
     @NotBlank(message = "이메일은 필수 값입니다.")
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식에 맞지 않습니다.")
     private String email;
 
+    @ApiParam(value = "member Password", required = true)
     @NotBlank(message = "패스워드는 필수 값입니다.")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$\n"
             , message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")

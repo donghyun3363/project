@@ -2,6 +2,7 @@ package com.hyun.project.member.controller;
 
 import com.hyun.project.member.dto.MemberDto;
 import com.hyun.project.member.service.MemberService;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class MemberController {
         return ResponseEntity.ok(memberDto);
     }
 
+    @ApiOperation(value = "Member create", notes = "사용자 저장")
     @PostMapping("/member")
     public ResponseEntity<?> createMember(@Valid MemberDto memberDto, BindingResult bindingResult) {
 
