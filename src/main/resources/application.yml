@@ -7,16 +7,14 @@ spring :
     cache : false
   datasource:
     hikari :
-      connectionTimeout : 30000 # 30sec
-      maximumPoolSize : 10      # default: 10
-
-    url : jdbc:mariadb://localhost:3306/test_db
+      connectionTimeout : 30000                   # db connect timeout 30sec
+      maximumPoolSize : 10                        # db connection pool default: 10
+    url : jdbc:mariadb://localhost:3306/test_db   # mariadb
     username : test
     password : lee0301@
 
-project.logging.dir : /Users/hyun/Desktop/logs/spring-boot-log/project
-project.logging.level : DEBUG
+project.logging.dir : /Users/hyun/Desktop/logs/spring-boot-log/project  # logback dir
+project.logging.level : DEBUG                                           # logback mode
 
-mybatis :
-  type-aliases-package : com.hyun.project.model
-  mapper-locations : mapper/*.xml
+mybatis :                                         # mybatis
+  mapper-locations : mapper/**/*.xml              # mapper loc
