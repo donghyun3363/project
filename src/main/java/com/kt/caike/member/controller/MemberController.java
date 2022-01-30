@@ -1,10 +1,13 @@
 package com.kt.caike.member.controller;
 
+import com.kt.caike.common.request.KtRequest;
+import com.kt.caike.common.response.KtResponse;
 import com.kt.caike.member.dto.MemberDto;
 import com.kt.caike.member.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -25,41 +28,24 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @ApiOperation(value = "Member find all", notes = "사용자 전체 조회")
-    @GetMapping("/member")
-    public ResponseEntity findAllMember() {
+    @ApiOperation(value = "Member create", notes = "1. 사용자 생성")
+    @PostMapping
+    public KtResponse<MemberDto> createMember(@Valid @RequestBody KtRequest<MemberDto> req, BindingResult bindingResult) {
 
-        List<MemberDto> memberDtoList = memberService.findAllMember();
-
-        return ResponseEntity.ok(memberDtoList);
-    }
-
-    @ApiOperation(value = "Member find", notes = "사용자 지정 조회")
-    @GetMapping("/member/{id}")
-    public ResponseEntity findMember(@PathVariable("id") int id) {
-        logger.debug("id: " + id);
-        MemberDto memberDto = memberService.findMemberById(id);
-
-        return ResponseEntity.ok(memberDto);
-    }
-
-    @ApiOperation(value = "Member create", notes = "사용자 생성")
-    @PostMapping("/member")
-    public ResponseEntity<?> createMember(@Valid @RequestBody MemberDto memberDto, BindingResult bindingResult) {
-
-        // validation
-        if(bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
+        if(bindingResult.hasErrors()) {     /* @Valid validation */
+            logger.error("createMember validationError");
+            return new KtResponse<MemberDto>().validationError(bindingResult);
         }
-
-        int result = memberService.saveMember(memberDto);
-
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        return memberService.createMember(req);
     }
 
-    @ApiOperation(value = "Member update", notes = "사용자 수정")
-    @PatchMapping("/member")
-    public ResponseEntity updateMember(MemberDto memberDto, BindingResult bindingResult) {
+    @ApiOperation(value = "Member update", notes = "2. 사용자 수정")
+    @PutMapping
+    public ResponseEntity updateMember(@Valid @RequestBody KtRequest<MemberDto> memberDto, BindingResult bindingResult) {
+
+        logger.debug("memberDto: " + memberDto);
+        logger.debug("bindingResult: " + bindingResult);
+
 
         if(bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
@@ -71,8 +57,9 @@ public class MemberController {
         return ResponseEntity.ok(true);
     }
 
-    @ApiOperation(value = "Member create", notes = "사용자 삭제")
-    @DeleteMapping("/member/{id}")
+
+    @ApiOperation(value = "Member create", notes = "3. 사용자 삭제")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteMember(@PathVariable("id") int id) {
 
         /*
@@ -80,6 +67,24 @@ public class MemberController {
          */
 
         return ResponseEntity.ok(true);
+    }
+
+    @ApiOperation(value = "Member find all", notes = "4. 사용자 전체 조회")
+    @GetMapping
+    public ResponseEntity findAllMember() {
+
+        List<MemberDto> memberDtoList = memberService.findAllMember();
+
+        return ResponseEntity.ok(memberDtoList);
+    }
+
+    @ApiOperation(value = "Member find", notes = "5. 사용자 지정 조회")
+    @GetMapping("/{id}")
+    public ResponseEntity findMember(@PathVariable("id") int id) {
+        logger.debug("id: " + id);
+        MemberDto memberDto = memberService.findMemberById(id);
+
+        return ResponseEntity.ok(memberDto);
     }
 
 }

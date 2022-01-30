@@ -1,4 +1,4 @@
-package com.kt.caike.common.type;
+package com.kt.caike.common.exception;
 
 public enum ErrorCode {
 

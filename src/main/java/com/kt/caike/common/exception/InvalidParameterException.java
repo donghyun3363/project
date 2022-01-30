@@ -1,6 +1,5 @@
 package com.kt.caike.common.exception;
 
-import com.kt.caike.common.type.ErrorCode;
 import org.springframework.validation.Errors;
 
 public class InvalidParameterException extends CustomException {

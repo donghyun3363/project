@@ -1,4 +1,4 @@
-package com.kt.caike.web;
+package com.kt.caike.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,40 +1,43 @@
 package com.kt.caike.member.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.kt.caike.member.enums.MemberStatus;
 import io.swagger.annotations.ApiParam;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@ToString
+@Data
+@Accessors(chain = true)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemberDto {
 
-    private int id;
+    @ApiParam(value = "사용자 인덱스", example = "int(seq)")
+    private Long id;
 
-    @ApiParam(value = "member ID", required = true)
+    @ApiParam(value = "사용자 ID", required = true)
     @NotBlank(message = "이름은 필수 값입니다.")
     private String name;
 
-    @ApiParam(value = "member Email", required = true)
+    @ApiParam(value = "사용자 Email", required = true)
     @NotBlank(message = "이메일은 필수 값입니다.")
     @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$", message = "이메일 형식에 맞지 않습니다.")
     private String email;
 
-    @ApiParam(value = "member Password", required = true)
+    @ApiParam(value = "사용자 Password", required = true)
     @NotBlank(message = "패스워드는 필수 값입니다.")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}$\n"
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\\d~!@#$%^&*()+|=]{8,16}"
             , message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
     private String password;
 
-    @Builder
-    private MemberDto(int id, String name, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
+    @ApiParam(value = "사용자 status", example = "Y/N")
+    private MemberStatus status;
+
 }
 
 /*

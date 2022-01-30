@@ -1,8 +1,5 @@
-package com.kt.caike.web;
+package com.kt.caike.common.exception;
 
-import com.kt.caike.common.exception.CustomException;
-import com.kt.caike.common.exception.InvalidParameterException;
-import com.kt.caike.common.type.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

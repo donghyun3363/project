@@ -1,17 +1,43 @@
 # application.yml
+server :
+  port: 8080
+
 spring :
+  mvc :
+    view :
+      prefix : /WEB-INF/views/
+      suffix : .jsp
+
   devtools :
     livereload :
       enalbed : true
+
   thymeleaf:
     cache : false
+
+  h2:
+    console:
+      enabled: true
+      path: /db
+
+  jpa:
+    hibernate:
+      ddl-auto: create #validate
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true  #false
+    show-sql: true                                # console sql log
+    database: mysql
+    open-in-view: false
+
   datasource:
     hikari :
-      connectionTimeout : 30000                   # db connect timeout 30sec
       maximumPoolSize : 10                        # db connection pool default: 10
-    url : jdbc:mariadb://localhost:3306/test_db   # mariadb
+      connectionTimeout : 10000                   # db connect timeout 10sec
+      validationTimeout : 9000
+    url : jdbc:mariadb://localhost:3306/test_db   # mariadb * Oracle 변경
     username : test
     password : lee0301@
+    driver-class-name: org.mariadb.jdbc.Driver
 
 project.logging.dir : /Users/hyun/Desktop/logs/spring-boot-log/project  # logback dir
 project.logging.level : DEBUG                                           # logback mode
