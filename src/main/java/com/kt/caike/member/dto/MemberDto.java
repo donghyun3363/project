@@ -17,10 +17,10 @@ import javax.validation.constraints.Pattern;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemberDto {
 
-    @ApiParam(value = "사용자 인덱스", example = "int(seq)")
+    @ApiParam(value = "사용자 인덱스", example = "1..2..3..")
     private Long id;
 
-    @ApiParam(value = "사용자 ID", required = true)
+    @ApiParam(value = "사용자 Name", required = true)
     @NotBlank(message = "이름은 필수 값입니다.")
     private String name;
 

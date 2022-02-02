@@ -4,18 +4,69 @@
 
 <mapper namespace="com.kt.caike.member.db.mapper.MemberMapper">
 
-    <select id="findMemberById" resultType="com.kt.caike.member.db.entity.Member" >
-        SELECT *
+    <resultMap id="memberResultMap" type="com.kt.caike.member.db.entity.Member">
+        <id column="id" property="id"  javaType="long"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <association column="group_cd" property="member_grp_cd"  javaType="com.kt.caike.member.db.entity.MemberGrpCd">
+            <id column="id" property="id" javaType="long"/>
+            <result column="group_cd" property="groupCd"/>
+            <result column="group_nm" property="groupNm"/>
+        </association>
+    </resultMap>
+
+    <select id="searchMember" parameterType="hashmap" resultMap="memberResultMap">
+        SELECT
+            m.id
+            ,m.email
+            ,m.password
+            ,m.name
+            ,m.created_at
+            ,m.created_by
+            ,mgc.group_cd
+            ,mgc.group_nm
+        FROM member m
+        LEFT OUTER JOIN member_grp_cd mgc
+        ON m.group_cd = mgc.group_cd
+        <where>
+            <include refid="searchWhere"/>
+        </where>
+
+        <if test="pagination != null">
+            ORDER BY ${pagination.orderBy} ${pagination.sortBy}
+            LIMIT #{pagination.limit} , #{pagination.size}
+        </if>
+    </select>
+
+    <select id="getAllCntMember" parameterType="hashmap" resultType="java.lang.Integer">
+        SELECT count(*)
         FROM member
-        WHERE id = #{id}
+        <where>
+            <include refid="searchWhere"/>
+        </where>
     </select>
 
-    <select id="findMemberAll" resultType="com.kt.caike.member.db.entity.Member">
-        SELECT * FROM member
-    </select>
+    <sql id="searchWhere">
+        1=1
+        <if test="memberSearchDto.id != null and memberSearchDto.id > 0">
+            AND id = #{memberSearchDto.userId}
+        </if>
 
-    <insert id="saveMember">
-        INSERT INTO member (name, email, password) values (#{name}, #{email}, #{password})
-    </insert>
+        <if test="memberSearchDto.status != null and memberSearchDto.status.length() > 0">
+            AND status = #{memberSearchDto.status}
+        </if>
+
+        <if test="memberSearchDto.name != null and memberSearchDto.name.length() > 0">
+            AND name = #{memberSearchDto.name}
+        </if>
+
+        <if test="memberSearchDto.email != null and memberSearchDto.email.length() > 0">
+            AND email = #{memberSearchDto.email}
+        </if>
+    </sql>
 
 </mapper>

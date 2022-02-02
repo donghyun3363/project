@@ -1,18 +1,21 @@
 package com.kt.caike.member.service;
 
 import com.kt.caike.common.request.KtRequest;
+import com.kt.caike.common.request.Pagination;
 import com.kt.caike.common.response.KtResponse;
 import com.kt.caike.common.service.CRUDService;
 import com.kt.caike.member.db.repository.MemberRepository;
 import com.kt.caike.member.dto.MemberDto;
 import com.kt.caike.member.db.mapper.MemberMapper;
 import com.kt.caike.member.db.entity.Member;
+import com.kt.caike.member.dto.MemberSearchDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -38,36 +41,36 @@ public class MemberService extends CRUDService {
         return new KtResponse<MemberDto>().responseOk(responseDto);
     }
 
-    public MemberDto findMemberById(int id) {
+    public KtResponse<MemberDto> findMember(long id) {
 
-        var member = memberMapper.findMemberById(id);
-/*
-        MemberDto findMember =  new MemberDto()
-                .id(member.getId())
-                .name(member.getName())
-                .email(member.getEmail())
-                .password(member.getPassword()).build();*/
+        Member findEntity = memberRepository.findByIdOrderByIdDesc(id);
 
-        return null;
+        MemberDto responseDto = memberConverterService.toDto(findEntity);
+
+        return new KtResponse<MemberDto>().responseOk(responseDto);
     }
 
-    public List<MemberDto> findAllMember() {
+    public KtResponse<List<MemberDto>> searchMember(MemberSearchDto memberSearchDto, Pagination pagination) {
 
-      /*  List<Member> memberList = memberMapper.findMemberAll();
+        var map = new HashMap<String,Object>();
+        map.put("memberSearchReq",memberSearchDto);
+        map.put("pagination",pagination);
 
-        List<MemberDto> findMemberList = new ArrayList<>();
+        var memberList = memberMapper.searchMember(map);
+        var countAll = memberMapper.getAllCntMember();
+        var count = memberList.size();
 
-        for(Member member: memberList) {
-            MemberDto findMember = MemberDto.builder()
-                    .id(member.getId())
-                    .name(member.getName())
-                    .email(member.getEmail())
-                    .password(member.getPassword()).build();
+        List<MemberDto> memberDtoList = new ArrayList<>();
+        memberList.forEach(member -> {
+            memberDtoList.add(memberConverterService.toDto(member));
+        });
 
-            findMemberList.add(findMember);
-        }*/
+        pagination.setCurrentElements(count);
+        pagination.setTotalPage(countAll);
 
-        return null;
+        pagination.complete();
+
+        return new KtResponse<List<MemberDto>>().responseOk(memberDtoList, pagination);
     }
 
 }

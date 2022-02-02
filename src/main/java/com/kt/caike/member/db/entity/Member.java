@@ -20,19 +20,23 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @ToString(of = {"id", "name", "email", "password", "status"})
 @EntityListeners(AuditingEntityListener.class)
+/*
 @SequenceGenerator(
         name="MEMBER_SEQ_GEN",
         sequenceName = "MEMBER_SEQ",
         initialValue = 1,
         allocationSize = 1
 )
+*/
 public class Member implements BaseEntity<Long> {
 
-    @Id
-    @GeneratedValue(
+    /*@GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "MEMBER_SEQ_GEN"
             )
+     */
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -55,4 +59,6 @@ public class Member implements BaseEntity<Long> {
 
     @LastModifiedBy
     private String updatedBy;
+
+    private MemberGrpCd memberGrpCd;
 }

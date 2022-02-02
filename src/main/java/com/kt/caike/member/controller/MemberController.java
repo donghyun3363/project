@@ -1,8 +1,10 @@
 package com.kt.caike.member.controller;
 
 import com.kt.caike.common.request.KtRequest;
+import com.kt.caike.common.request.Pagination;
 import com.kt.caike.common.response.KtResponse;
 import com.kt.caike.member.dto.MemberDto;
+import com.kt.caike.member.dto.MemberSearchDto;
 import com.kt.caike.member.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,50 +43,36 @@ public class MemberController {
 
     @ApiOperation(value = "Member update", notes = "2. 사용자 수정")
     @PutMapping
-    public ResponseEntity updateMember(@Valid @RequestBody KtRequest<MemberDto> memberDto, BindingResult bindingResult) {
-
-        logger.debug("memberDto: " + memberDto);
-        logger.debug("bindingResult: " + bindingResult);
-
+    public KtResponse<MemberDto> updateMember(@Valid @RequestBody KtRequest<MemberDto> req, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
+            logger.error("createMember validationError");
+            return new KtResponse<MemberDto>().validationError(bindingResult);
         }
 
-        /*
-         * update logic
-         */
-        return ResponseEntity.ok(true);
+        return memberService.update(req);
     }
 
 
     @ApiOperation(value = "Member create", notes = "3. 사용자 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteMember(@PathVariable("id") int id) {
+    public KtResponse<MemberDto> deleteMember(@PathVariable("id") long id) {
 
-        /*
-         * delete logic
-         */
-
-        return ResponseEntity.ok(true);
+        return memberService.delete(id);
     }
 
     @ApiOperation(value = "Member find all", notes = "4. 사용자 전체 조회")
-    @GetMapping
-    public ResponseEntity findAllMember() {
+    @GetMapping("/search")
+    public KtResponse<List<MemberDto>> findAllMember(MemberSearchDto memberSearchDto, Pagination pagination) {
 
-        List<MemberDto> memberDtoList = memberService.findAllMember();
-
-        return ResponseEntity.ok(memberDtoList);
+        return memberService.searchMember(memberSearchDto, pagination);
     }
 
     @ApiOperation(value = "Member find", notes = "5. 사용자 지정 조회")
     @GetMapping("/{id}")
-    public ResponseEntity findMember(@PathVariable("id") int id) {
-        logger.debug("id: " + id);
-        MemberDto memberDto = memberService.findMemberById(id);
+    public KtResponse<MemberDto> findMember(@PathVariable("id") long id) {
 
-        return ResponseEntity.ok(memberDto);
+        return memberService.findMember(id);
     }
 
 }

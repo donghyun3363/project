@@ -1,6 +1,9 @@
 package com.kt.caike.member.service;
 
+import com.kt.caike.common.request.Pagination;
+import com.kt.caike.common.response.KtResponse;
 import com.kt.caike.member.dto.MemberDto;
+import com.kt.caike.member.dto.MemberSearchDto;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.slf4j.Logger;
@@ -21,9 +24,8 @@ public class MemberServiceTest {
     @Test
     @DisplayName("전체 조회")
     public void test1() {
-        List<MemberDto> memberDtoList = memberService.findAllMember();
-        for(MemberDto memberDto : memberDtoList) {
-            logger.debug(memberDtoList.toString());
-        }
+
+        KtResponse<List<MemberDto>> memberDtoList = memberService.searchMember(new MemberSearchDto(), new Pagination());
+        logger.debug("body: " + memberDtoList.getBody());
     }
 }
