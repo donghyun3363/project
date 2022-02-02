@@ -4,22 +4,7 @@
 
 <mapper namespace="com.kt.caike.member.db.mapper.MemberMapper">
 
-    <resultMap id="memberResultMap" type="com.kt.caike.member.db.entity.Member">
-        <id column="id" property="id"  javaType="long"/>
-        <result column="email" property="email"/>
-        <result column="password" property="password"/>
-        <result column="name" property="name"/>
-        <result column="password" property="password"/>
-        <result column="created_at" property="createdAt"/>
-        <result column="updated_at" property="updatedAt"/>
-        <association column="group_cd" property="member_grp_cd"  javaType="com.kt.caike.member.db.entity.MemberGrpCd">
-            <id column="id" property="id" javaType="long"/>
-            <result column="group_cd" property="groupCd"/>
-            <result column="group_nm" property="groupNm"/>
-        </association>
-    </resultMap>
-
-    <select id="searchMember" parameterType="hashmap" resultMap="memberResultMap">
+    <select id="searchMember" parameterType="hashmap" resultType="com.kt.caike.member.dto.MemberDto">
         SELECT
             m.id
             ,m.email
@@ -44,7 +29,7 @@
 
     <select id="getAllCntMember" parameterType="hashmap" resultType="java.lang.Integer">
         SELECT count(*)
-        FROM member
+        FROM member m
         <where>
             <include refid="searchWhere"/>
         </where>
@@ -52,20 +37,20 @@
 
     <sql id="searchWhere">
         1=1
-        <if test="memberSearchDto.id != null and memberSearchDto.id > 0">
-            AND id = #{memberSearchDto.userId}
+        <if test="memberSearchDto.userId != null and memberSearchDto.userId > 0">
+            AND m.id = #{memberSearchDto.userId}
         </if>
 
         <if test="memberSearchDto.status != null and memberSearchDto.status.length() > 0">
-            AND status = #{memberSearchDto.status}
+            AND m.status = #{memberSearchDto.status}
         </if>
 
         <if test="memberSearchDto.name != null and memberSearchDto.name.length() > 0">
-            AND name = #{memberSearchDto.name}
+            AND m.name = #{memberSearchDto.name}
         </if>
 
         <if test="memberSearchDto.email != null and memberSearchDto.email.length() > 0">
-            AND email = #{memberSearchDto.email}
+            AND m.email = #{memberSearchDto.email}
         </if>
     </sql>
 

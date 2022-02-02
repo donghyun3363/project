@@ -53,20 +53,15 @@ public class MemberService extends CRUDService {
     public KtResponse<List<MemberDto>> searchMember(MemberSearchDto memberSearchDto, Pagination pagination) {
 
         var map = new HashMap<String,Object>();
-        map.put("memberSearchReq",memberSearchDto);
+        map.put("memberSearchDto",memberSearchDto);
         map.put("pagination",pagination);
 
-        var memberList = memberMapper.searchMember(map);
-        var countAll = memberMapper.getAllCntMember();
-        var count = memberList.size();
-
-        List<MemberDto> memberDtoList = new ArrayList<>();
-        memberList.forEach(member -> {
-            memberDtoList.add(memberConverterService.toDto(member));
-        });
+        var memberDtoList = memberMapper.searchMember(map);
+        var countAll = memberMapper.getAllCntMember(map);
+        var count = memberDtoList.size();
 
         pagination.setCurrentElements(count);
-        pagination.setTotalPage(countAll);
+        pagination.setTotalElements(countAll);
 
         pagination.complete();
 

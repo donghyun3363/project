@@ -19,6 +19,9 @@ import javax.validation.constraints.Pattern;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemberSearchDto {
 
+    @ApiParam(value = "사용자 id", required = true)
+    private String userId;
+
     @ApiParam(value = "사용자 Name", required = true)
     private String name;
 

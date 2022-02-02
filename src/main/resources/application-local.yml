@@ -19,7 +19,7 @@ spring :
 
   jpa :
     hibernate :
-      ddl-auto : validate                                 # * validate (prd)
+      ddl-auto : create                                 # * validate (prd)
     properties :
       hibernate.dialect : org.hibernate.dialect.MySQL5InnoDBDialect # * org.hibernate.dialect.H2Dialect
       format_sql : true                                   # * false (prd)

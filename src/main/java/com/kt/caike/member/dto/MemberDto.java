@@ -38,6 +38,10 @@ public class MemberDto {
     @ApiParam(value = "사용자 status", example = "Y/N")
     private MemberStatus status;
 
+    private String groupCd;
+
+    private String groupNm;
+
 }
 
 /*

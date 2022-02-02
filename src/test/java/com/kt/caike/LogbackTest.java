@@ -13,7 +13,6 @@ public class LogbackTest {
     @BeforeAll
     static void beforeAll() {
         System.out.println("-- @BeforeAll");
-        System.out.println();
     }
 
     @AfterAll
@@ -29,7 +28,6 @@ public class LogbackTest {
     @AfterEach
     void afterEach() {
         System.out.println("--- @AfterEach");
-        System.out.println();
     }
 
     @Test

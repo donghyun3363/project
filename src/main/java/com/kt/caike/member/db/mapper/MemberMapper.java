@@ -1,6 +1,7 @@
 package com.kt.caike.member.db.mapper;
 
 import com.kt.caike.member.db.entity.Member;
+import com.kt.caike.member.dto.MemberDto;
 import com.kt.caike.member.dto.MemberSearchDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,8 +12,8 @@ import java.util.Map;
 @Mapper
 public interface MemberMapper {
 
-    public List<Member> searchMember(Map map);
+    public List<MemberDto> searchMember(Map map);
 
-    public Integer getAllCntMember();
+    public Integer getAllCntMember(Map map);
 
 }

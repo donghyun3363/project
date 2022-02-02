@@ -65,6 +65,9 @@ public class MemberController {
     @GetMapping("/search")
     public KtResponse<List<MemberDto>> findAllMember(MemberSearchDto memberSearchDto, Pagination pagination) {
 
+        logger.debug("memberSearchDto: " + memberSearchDto);
+        logger.debug("pagination: " + pagination);
+
         return memberService.searchMember(memberSearchDto, pagination);
     }
 

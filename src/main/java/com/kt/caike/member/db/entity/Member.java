@@ -12,13 +12,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity(name = "member")
 @Accessors(chain = true)
-@ToString(of = {"id", "name", "email", "password", "status"})
 @EntityListeners(AuditingEntityListener.class)
 /*
 @SequenceGenerator(
@@ -60,5 +60,4 @@ public class Member implements BaseEntity<Long> {
     @LastModifiedBy
     private String updatedBy;
 
-    private MemberGrpCd memberGrpCd;
 }
