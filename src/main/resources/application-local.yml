@@ -1,0 +1,51 @@
+# application-local.yml
+spring :
+  mvc :
+    view :
+      prefix : /WEB-INF/views/
+      suffix : .jsp
+
+  devtools :
+    livereload :
+      enalbed : true
+
+  thymeleaf :
+    cache : false
+
+  h2 :
+    console :
+      enabled : true
+      path : /db
+
+  jpa :
+    hibernate :
+      ddl-auto : validate                                 # * validate (prd)
+    properties :
+      hibernate.dialect : org.hibernate.dialect.MySQL5InnoDBDialect # * org.hibernate.dialect.H2Dialect
+      format_sql : true                                   # * false (prd)
+    database-platform : org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl : true                                   # * false (prd)
+    show-sql : true                                       # * false (prd)
+    database : mysql                                      # * oracle
+    open-in-view : false
+
+  datasource :
+    hikari :
+      maximumPoolSize : 20                        # db connection pool default: 10
+      connectionTimeout : 10000                   # db connect timeout 10sec
+      validationTimeout : 9000
+      max-lifetime: 600000
+    url : jdbc:mariadb://localhost:3306/test_db           # * jdbc:oracle:thin:@localhost:1521:XE
+    username : test
+    password : lee0301@
+    driver-class-name: org.mariadb.jdbc.Driver            # * oracle.jdbc.OracleDriver
+
+project :
+  logging :
+    dir : /Users/hyun/Desktop/logs/spring-boot-log/caike  # * logback dir
+    level : DEBUG                                         # logback mode
+    filename : caike-log                                  # * logback filname
+
+mybatis :
+  map-underscore-to-camel-case: true
+  mapper-locations : mapper/**/*.xml              # mapper loc
