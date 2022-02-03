@@ -11,6 +11,7 @@ public class MemberConverterService implements ConverterService<MemberDto, Membe
     @Override
     public MemberDto toDto(Member member) {
         return new MemberDto()
+                .setUserId(member.getUserId())
                 .setId(member.getId())
                 .setName(member.getName())
                 .setPassword(member.getPassword())
@@ -22,6 +23,7 @@ public class MemberConverterService implements ConverterService<MemberDto, Membe
     @Override
     public Member toEntity(MemberDto memberDto) {
         return new Member()
+                .setUserId(memberDto.getUserId())
                 .setId(memberDto.getId())
                 .setName(memberDto.getName())
                 .setPassword(memberDto.getPassword())

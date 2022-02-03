@@ -12,15 +12,23 @@ import com.kt.caike.member.dto.MemberSearchDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService extends CRUDService {
+public class MemberService extends CRUDService implements UserDetailsService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -32,8 +40,13 @@ public class MemberService extends CRUDService {
 
     public KtResponse<MemberDto> createMember(KtRequest<MemberDto> req) {
 
+        logger.debug("req: " + req);
 
         Member newEntity = memberConverterService.toEntity(req.getBody());
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        newEntity.setPassword(passwordEncoder.encode(newEntity.getPassword()));
+
         Member saveEntity = memberRepository.saveAndFlush(newEntity);
 
         MemberDto responseDto = memberConverterService.toDto(saveEntity);
@@ -41,9 +54,10 @@ public class MemberService extends CRUDService {
         return new KtResponse<MemberDto>().responseOk(responseDto);
     }
 
-    public KtResponse<MemberDto> findMember(long id) {
+    public KtResponse<MemberDto> findMember(String userId) {
 
-        Member findEntity = memberRepository.findByIdOrderByIdDesc(id);
+        Optional<Member> memberEntityWrapper = memberRepository.findByUserId(userId);
+        Member findEntity = memberEntityWrapper.orElse(null);
 
         MemberDto responseDto = memberConverterService.toDto(findEntity);
 
@@ -68,4 +82,18 @@ public class MemberService extends CRUDService {
         return new KtResponse<List<MemberDto>>().responseOk(memberDtoList, pagination);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        Optional<Member> memberEntityWrapper = memberRepository.findByUserId(userId);
+        Member memberEntity = memberEntityWrapper.orElse(null);
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+
+        logger.debug("[loadUserByUsername] memberEntity: " + memberEntity);
+
+        return new User(memberEntity.getUserId(), memberEntity.getPassword(), authorities);
+
+    }
 }

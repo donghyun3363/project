@@ -11,6 +11,9 @@ spring :
 
   thymeleaf :
     cache : false
+    prefix : classpath:/templates/
+    suffix : .html
+    view-names : thymeleaf/* # jsp와 같이 사용할 경우 구분짓는 용도
 
   h2 :
     console :

@@ -35,29 +35,41 @@ public class Member implements BaseEntity<Long> {
             generator = "MEMBER_SEQ_GEN"
             )
      */
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length =  255, nullable = false, unique = true)
+    private String userId;
+
+    @Column(length = 255, nullable = false)
+    private String password;
+
+    @Column(length = 255, nullable = false)
     private String name;
 
+    @Column(length = 255, nullable = false)
     private String email;
 
-    private String password;
 
     @Enumerated(EnumType.STRING)
     MemberStatus status;
 
     @CreatedDate
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @CreatedBy
+    @Column(name = "created_by")
     private String createdBy;
 
     @LastModifiedDate
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
+    @Column(name = "updated_by")
     private String updatedBy;
 
 }

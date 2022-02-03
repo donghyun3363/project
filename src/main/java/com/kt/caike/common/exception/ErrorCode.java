@@ -1,5 +1,8 @@
 package com.kt.caike.common.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 public enum ErrorCode {
 
     INVALID_PARAMETER(400, null, "Invalid Request Data"),
